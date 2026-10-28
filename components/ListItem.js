@@ -3,8 +3,7 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 import { playSound } from "../services/soundHandler";
 import { COLORS } from "../constants";
 
-export default Item = ({ item, onDelete }) => {
-
+export default Item = ({ item, onDelete, onPress }) => {
   return (
     <View style={styles.item}>
       <Pressable disabled={!item.audio} onPress={() => playSound(item.audio)}>
@@ -20,9 +19,7 @@ export default Item = ({ item, onDelete }) => {
           />
         </View>
       </Pressable>
-      <Pressable
-        style={styles.textContainer}
-      >
+      <Pressable style={styles.textContainer} onPress={onPress}>
         <Text style={styles.title}>{item.word}</Text>
         <Text style={styles.definition}>{item.meaning}</Text>
       </Pressable>
@@ -38,7 +35,6 @@ export default Item = ({ item, onDelete }) => {
 
 const styles = StyleSheet.create({
   item: {
-    zIndex: -10,
     backgroundColor: COLORS.white,
     flexDirection: "row",
     marginVertical: 6,
@@ -47,6 +43,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 5,
     borderRadius: 8,
     elevation: 4,
+    zIndex: -10,
   },
   title: {
     fontSize: 20,

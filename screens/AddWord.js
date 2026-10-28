@@ -6,20 +6,32 @@ import {
   Image,
   Pressable,
 } from "react-native";
-import { useState, useEffect } from "react";
+import { useState, useEffect, use } from "react";
 import { getWordInfo } from "../services/wordsHandler";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { playSound } from "../services/soundHandler";
 import { COLORS } from "../constants";
+import { useNavigation } from "@react-navigation/native";
 
 function AddWord() {
   const [text, setText] = useState();
   const [wordData, setWordData] = useState();
+  const navigation = useNavigation();
+
+  const onAdd = () => {
+    navigation.navigate("AllWords", { newWord: wordData });
+  };
 
   function onChangeText(text) {
     setWordData(undefined);
     setText(text);
   }
+
+  useEffect(() => {
+    navigation.setOptions({
+      title: wordData?.word ? `Adding word "${wordData.word}"` : "Adding word",
+    });
+  }, [wordData, navigation]);
 
   useEffect(() => {
     const delayDebounceFn = setTimeout(async () => {
@@ -33,7 +45,7 @@ function AddWord() {
   }, [text]);
 
   return (
-    <>
+    <View style={styles.mainContainer}>
       <Image
         style={{
           marginTop: 100,
@@ -83,11 +95,15 @@ function AddWord() {
           )}
         </View>
       )}
-    </>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
+  mainContainer: {
+    backgroundColor: "#474747",
+    flex: 1,
+  },
   input: {
     height: 40,
     fontSize: 18,
